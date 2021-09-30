@@ -1,8 +1,9 @@
 import ballerina/http;
-import ballerina/jballerina.java;
+import athukorala/'listener.interop.handler as interop_handler;
 
 service class DispatcherService {
    private map<GenericService> services = {};
+   private interop_handler:InteropHandler interopHandler = new ();
 
    isolated function addServiceRef(string serviceType, GenericService genericService) returns error? {
         if (self.services.hasKey(serviceType)) {
@@ -40,13 +41,8 @@ service class DispatcherService {
 
    private function executeRemoteFunc(GenericEventWrapperEvent genericEvent, string serviceTypeStr, string eventFunction) returns error? {
      if self.services.hasKey(serviceTypeStr) {
-          check self.callOnAppEvent(genericEvent, genericEvent.event.'type, eventFunction, self.services[serviceTypeStr]);
+          check self.interopHandler.callOnAppEvent(genericEvent, genericEvent.event.'type, eventFunction, self.services[serviceTypeStr]);
      }
    }
-
-    isolated function callOnAppEvent(GenericEventWrapperEvent event, string eventName, string eventFunction, any serviceObj) returns error?
-    = @java:Method {
-        'class: "io.ballerinax.event.NativeHttpToEventAdaptor"
-    } external;
 }
 
