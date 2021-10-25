@@ -38,7 +38,6 @@ service class DispatcherService {
                 check self.executeRemoteFunc(genericDataType, "app_created", "AppCreatedHandlingService", "onAppCreated");
             }
         }
-        check caller->respond(http:STATUS_OK);
     }
 
     private function executeRemoteFunc(GenericDataType genericEvent, string eventName, string serviceTypeStr, string eventFunction) returns error? {

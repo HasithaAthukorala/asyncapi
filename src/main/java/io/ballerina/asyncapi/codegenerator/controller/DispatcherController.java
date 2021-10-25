@@ -69,7 +69,7 @@ public class DispatcherController implements BalController {
         FunctionBodyBlockNode functionBodyBlockNode = (FunctionBodyBlockNode) functionDefinitionNode.functionBody();
         NodeList<StatementNode> oldStatements = functionBodyBlockNode.statements();
         NodeList<StatementNode> newStatements =
-                oldStatements.add(oldStatements.size() - 1, matchStatementNode);
+                oldStatements.add(matchStatementNode);
         FunctionBodyBlockNode functionBodyBlockNodeNew =
                 functionBodyBlockNode.modify().withStatements(newStatements).apply();
         ModulePartNode newRoot = oldRoot.replace(functionBodyBlockNode, functionBodyBlockNodeNew);
